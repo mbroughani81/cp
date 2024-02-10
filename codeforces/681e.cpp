@@ -161,7 +161,6 @@ int main() {
     // cout << "GGG => " << r.first << " " << r.second << "\n";
     sum += r.second - r.first;
   }
-  cout << "GGGGGGGG\n";
-  cout << fixed << setprecision(10) << 1 - sum / (2 * PI) << "\n";
+  cout << "GGGGGGGG\n" Cout << fixed << setprecision(10) << -sum / (2 * PI) + 1 << "\n";
   return 0;
 }
