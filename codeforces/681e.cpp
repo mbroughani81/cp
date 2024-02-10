@@ -89,7 +89,6 @@ int main() {
   y_0 = 0;
   // check if center is covered by some circle
   for (int i = 0; i < n; i++) {
-    // cout << "Gggg => " << p[i].x << " " << p[i].y << " " << dis(point2d(x_0, y_0), p[i]) << "\n";
     if (dis(point2d(x_0, y_0), p[i]) <= r[i] || abs(dis(point2d(x_0, y_0), p[i]) - r[i]) <= EPS) {
       cout << 1 << "\n";
       return 0;
@@ -100,8 +99,10 @@ int main() {
     ftype theta = 0;
     if (p[i].x == 0) {
       theta = 0;
+      // cout << "GKI\n";
     } else {
       theta = PI / 2 - atan(p[i].y / p[i].x);
+      // cout << theta << "GASFDG\n";
     }
     if (p[i].x < 0) {
       theta += PI;
@@ -168,10 +169,10 @@ int main() {
     // }
   }
   ftype sum = 0;
-  // for (pair<ftype, ftype> r : uncovered_range) {
-  //   cout << "GGG => " << r.first << " " << r.second << "\n";
-  //   sum += r.second - r.first;
-  // }
+  for (pair<ftype, ftype> r : uncovered_range) {
+    // cout << "GGG => " << r.first << " " << r.second << "\n";
+    sum += r.second - r.first;
+  }
   // cout << "GGGGGGGG\n" << sum << "\n";
   cout << fixed << setprecision(10) << -sum / (2 * PI) + 1 << "\n";
   return 0;
