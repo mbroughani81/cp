@@ -89,20 +89,28 @@ int main() {
   y_0 = 0;
   // check if center is covered by some circle
   for (int i = 0; i < n; i++) {
-    if (abs(dis(point2d(x_0, y_0), p[i]) - r[i]) <= EPS) {
+    // cout << "Gggg => " << p[i].x << " " << p[i].y << " " << dis(point2d(x_0, y_0), p[i]) << "\n";
+    if (dis(point2d(x_0, y_0), p[i]) <= r[i] || abs(dis(point2d(x_0, y_0), p[i]) - r[i]) <= EPS) {
       cout << 1 << "\n";
       return 0;
     }
   }
   // calculating the covered angle for each circle
   for (int i = 0; i < n; i++) {
-    ftype theta = PI / 2 - atan(p[i].y / p[i].x);
+    ftype theta = 0;
+    if (p[i].x == 0) {
+      theta = 0;
+    } else {
+      theta = PI / 2 - atan(p[i].y / p[i].x);
+    }
     if (p[i].x < 0) {
       theta += PI;
     }
+    // cout << "theta => " << theta << " " << p[i].y / p[i].x << "\n";
     ftype dd;
-    if (abs((dis(p[i], point2d(0, 0)) + r[i]) - r_0) <= EPS) {
+    if (abs(dis(p[i], point2d(0, 0)) - r_0) <= EPS) {
       dd = asin(r[i] / dis(p[i], point2d(0, 0)));
+      // cout << "asdfasdfasdf => " << dd << " " << p[i].x << " " << p[i].y << " " << r[i] << "\n";
     } else {
       vector<point2d> i_points = get_two_circles_i_points(point2d(x_0, y_0), r_0, p[i], r[i]);
       if (i_points.size() != 2) {
@@ -110,13 +118,16 @@ int main() {
       }
       point2d i_point_1 = i_points.at(0);
       point2d i_point_2 = i_points.at(1);
-      cout << "1 => " << i_point_1.x << " " << i_point_1.y << "\n";
-      cout << "2 => " << i_point_2.x << " " << i_point_2.y << "\n";
+      // cout << "1 => " << i_point_1.x << " " << i_point_1.y << "\n";
+      // cout << "2 => " << i_point_2.x << " " << i_point_2.y << "\n";
       dd = acos(dot(i_point_1, i_point_2) / norm(i_point_1) / norm(i_point_2)) / 2;
-      cout << "FKN => " << dd << "\n";
+      // cout << "FKN => " << dd << "\n";
     }
     covered_ranges.push_back(make_pair(theta - dd, theta + dd));
   }
+  // for (pair<ftype, ftype> r : covered_ranges) {
+  //   cout << "GGGHHH " << r.first << " " << r.second << "\n";
+  // }
   // calculate the union of ranges
   for (pair<ftype, ftype> r : covered_ranges) {
     dup_ranges.push_back(make_pair(r.first - 2 * PI, r.second - 2 * PI));
@@ -146,21 +157,22 @@ int main() {
       mx = max(mx, r.second);
     }
     sort(uncovered_range.begin(), uncovered_range.end());
-    for (pair<ftype, ftype> r : uncovered_range) {
-      cout << "AAA => " << r.first << " " << r.second << "\n";
-    }
-    cout << "GOOOZZZZ\n";
+    // for (pair<ftype, ftype> r : uncovered_range) {
+    //   cout << "AAA => " << r.first << " " << r.second << "\n";
+    // }
+    // cout << "GOOOZZZZ\n";
     vector<pair<ftype, ftype>>::iterator it = unique(uncovered_range.begin(), uncovered_range.end(), pair_of_ftype_cmp);
     uncovered_range.resize(distance(uncovered_range.begin(), it));
-    for (pair<ftype, ftype> r : uncovered_range) {
-      cout << "BBB => " << r.first << " " << r.second << "\n";
-    }
+    // for (pair<ftype, ftype> r : uncovered_range) {
+    //   cout << "BBB => " << r.first << " " << r.second << "\n";
+    // }
   }
   ftype sum = 0;
-  for (pair<ftype, ftype> r : uncovered_range) {
-    // cout << "GGG => " << r.first << " " << r.second << "\n";
-    sum += r.second - r.first;
-  }
-  cout << "GGGGGGGG\n" Cout << fixed << setprecision(10) << -sum / (2 * PI) + 1 << "\n";
+  // for (pair<ftype, ftype> r : uncovered_range) {
+  //   cout << "GGG => " << r.first << " " << r.second << "\n";
+  //   sum += r.second - r.first;
+  // }
+  // cout << "GGGGGGGG\n" << sum << "\n";
+  cout << fixed << setprecision(10) << -sum / (2 * PI) + 1 << "\n";
   return 0;
 }
